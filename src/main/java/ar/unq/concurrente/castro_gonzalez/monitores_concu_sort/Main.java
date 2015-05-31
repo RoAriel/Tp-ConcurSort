@@ -9,7 +9,7 @@ public class Main {
 		SyncList listaSorteable = new SyncList();
 		ClienteListaSize cliente1 = new ClienteListaSize(listaSorteable, "Juan Carlos");
 		ClienteListaAdd cliente2 = new ClienteListaAdd(listaSorteable, "Merlina");
-//		ClienteListaSize cliente3 = new ClienteListaSize(listaSorteable, "Pedro");
+		ClienteListaSize cliente3 = new ClienteListaSize(listaSorteable, "Pedro");
 		ClienteListaAdd cliente4 = new ClienteListaAdd(listaSorteable, "Luis");
 //		ClienteListaAdd cliente5 = new ClienteListaAdd(listaSorteable, "Roberto");
 //		ClienteListaAdd cliente6 = new ClienteListaAdd(listaSorteable, "Julian");
@@ -33,7 +33,7 @@ public class Main {
 //		ClienteListaAdd cliente24 = new ClienteListaAdd(listaSorteable, "r");
 		cliente1.start();
 		cliente2.start();
-//		cliente3.start();
+		cliente3.start();
 		cliente4.start();
 //		cliente5.start();
 //		cliente6.start();
