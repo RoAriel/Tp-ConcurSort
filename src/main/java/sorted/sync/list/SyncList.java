@@ -68,8 +68,8 @@ public class SyncList extends Thread {
 	}
 	
 	public synchronized List<Integer> realSort(int cantThreads, List<Integer> list) {
-		cantThreads--;
-		
+		//cantThreads--; el primero tambien se usa ?
+
 		if (this.realSize(list) <= 1) {
 			return list;
 		}
@@ -88,6 +88,7 @@ public class SyncList extends Thread {
 			ThreadSorteador threadLess = new ThreadSorteador(cantThreads, listaIzquierda);
 			threadLess.start();
 			listaIzquierdaSorted = threadLess.getSortedList();
+			cantThreads++;
 		}else {
 			listaIzquierdaSorted = this.realSort(cantThreads, listaIzquierda);
 		}
@@ -96,6 +97,7 @@ public class SyncList extends Thread {
 			ThreadSorteador threadLess = new ThreadSorteador(cantThreads, listaDerecha);
 			threadLess.start();
 			listaDerechaSorted = threadLess.getSortedList();
+			cantThreads++;
 		}else {
 			listaDerechaSorted = this.realSort(cantThreads, listaDerecha);
 		}
