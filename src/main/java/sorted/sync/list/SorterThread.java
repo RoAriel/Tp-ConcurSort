@@ -105,8 +105,11 @@ public class SorterThread extends Thread {
 	}
 	
 	
-	public synchronized void run() {
+	public void run() {
 		this.sortedList = this.quickSort(this.getList(), this.handler);
+		synchronized (this) {
+            this.notify();   
+        }
 	}
 
 	public boolean noTerminoDeOrdenar() {

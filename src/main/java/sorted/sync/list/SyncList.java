@@ -76,7 +76,7 @@ public class SyncList extends Thread {
 		this.elementos.set(posicion, element);
 	}
 	
-	public  List<Integer> sort(int cantThreads) {
+	public synchronized  List<Integer> sort(int cantThreads) {
 		this.tHandler = new ThreadsHandler(cantThreads);
 		if (this.tHandler.hasThread()) {
 			return this.sortWithHandler();
@@ -89,17 +89,29 @@ public class SyncList extends Thread {
 		SorterThread tSort =  new SorterThread(this.elementos, this.tHandler);
 		tSort.start();
 		
-		/**
-		 * Buscamos en la web y vimos que el metodo join espera a que el 
-		 * metodo run termine, asegura el valor del Thread, 
-		 * si esta mal y es necesario utilizar wait() y notify()
-		 * lo hacemos.
-		 * */
-		try {
-			tSort.join();
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
+//		/**
+//		 * Buscamos en la web y vimos que el metodo join espera que el 
+//		 * metodo run termine, asegura el valor del Thread, 
+//		 * si esta mal y es necesario utilizar wait() y notify()
+//		 * lo hacemos.
+//		 * */
+//		try {
+//			tSort.join();
+//		} catch (InterruptedException e1) {
+//			e1.printStackTrace();
+//		}
+		
+		synchronized (tSort) {
+			try {
+				tSort.wait();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+			
+		
+		
 		return tSort.getSortedList();
 	}
 	
