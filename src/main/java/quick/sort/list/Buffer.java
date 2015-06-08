@@ -7,32 +7,27 @@ public class Buffer {
 
 	private List<Seccion> values;
 	
-	private boolean isEmpty() { 
-		return this.values.size() == 0; 
+	public synchronized boolean isEmpty() { 
+		return this.values.isEmpty(); 
 	}
-
-//	private int next(int n) { 
-//		return (n+1) % values.length; 
-//	}
-	
 	public Buffer() {
 		this.values = new LinkedList<Seccion>();
 	}
-	
-//	public Buffer(List<Seccion> list) {
-//		this.values = list;
-//	}
-	
 	public synchronized void push(Seccion seccion) {
 		values.add(seccion);
 		notifyAll();
 	}
 	
 	public synchronized Seccion pop() {
-		while (isEmpty())
-			try { wait(); } catch (InterruptedException e) {}
+		while (this.values.size() == 0) {
+			try {
+				wait(); 
+				} catch (InterruptedException e) {}
+		}
+		Seccion seccionResult = this.values.get(0);
+		this.values.remove(seccionResult);
+		return seccionResult;
 		
-		return values.remove(0);
 	}
 	
 }

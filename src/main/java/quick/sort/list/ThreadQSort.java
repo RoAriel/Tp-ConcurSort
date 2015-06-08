@@ -16,35 +16,36 @@ public class ThreadQSort extends Thread {
 	
 	@Override
 	public void run() {
+		System.out.println("Arranco el thread");
 		while (true) {
 			Seccion sector = this.pila.pop(); // consume trabajo (bloqueante)
+			System.out.println("thread hace pop");
 			if (!sector.isValid()) {
 				return;
 			}
-			if (sector.size()>1) {
+			if (sector.size() > 1) {
 				int count = qsort_seccion(this.listaAOrdenar, sector.inicio, sector.fin);
-				Seccion new_left_range = new Seccion(sector.inicio, sector.inicio + count-1);
-				Seccion new_rigth_range = new Seccion(sector.inicio + count + 1, sector.fin);
+				Seccion new_left_range = new Seccion(sector.inicio, sector.inicio + (count-1));
+				Seccion new_right_range = new Seccion(sector.inicio + (count + 1), sector.fin);
 				this.pila.push(new_left_range);  // agrega trabajo
-				this.pila.push(new_rigth_range); // agrega trabajo
+				this.pila.push(new_right_range); // agrega trabajo
 			} 
 			if (!sector.isEmpty()) {
 				contador.decrementar();
 			}
 		}
-		
 	}
-
+	
 	public int qsort_seccion(List<Integer> list, int inicio, int fin) {
 		int j = 0;
 		int pivot = list.get(inicio); 
-		for (int i = inicio + 1; i <=fin ; i++) {
+		for (int i = inicio + 1; i <= fin ; i++) {
 			if (list.get(i) < pivot) {
 				this.swap(list, i, inicio+1 + j);
 				j++;
 			}
 		}
-		swap(list, inicio, inicio+j);
+		this.swap(list, inicio, inicio+j);
 		return j;
 	}
 	
@@ -54,13 +55,5 @@ public class ThreadQSort extends Thread {
 		Integer j = list.get(indexB);
 		list.set(indexB, i);
 		list.set(indexA, j);
-	}
-	
-	private synchronized void esperar() {
-		try {
-			wait();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 	}
 }

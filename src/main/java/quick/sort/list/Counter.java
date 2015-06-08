@@ -1,33 +1,28 @@
-<<<<<<< HEAD
 package quick.sort.list;
 
 public class Counter {
 
- Integer cont;
- Boolean isZero;
+	public Integer cont;
+	
 
- public Counter(Integer initial) {
- 	this.cont = initial;
- 	this.isZero = false;
- }
+	public Counter(Integer initial) {
+		this.cont = initial;
+	}
 
- public synchronized void decrementar() {
- 	if (this.isZero) {
- 	notifyAll();
- 	}
+	public synchronized void decrementar() {
+		this.cont = this.cont -1;
+		if (this.cont == 0) {
+			notifyAll();
+		}
+	}
 
- 	this.cont--;
-
- }
-
- public synchronized void waitZero() {
-
- 	if (!this.isZero)
- 	try {
- 	wait();
- 	} catch (InterruptedException e) {
- 	e.printStackTrace();
- 	}
-
- }
+	public synchronized void waitZero() {
+		while (this.cont != 0) {
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

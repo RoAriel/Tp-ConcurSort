@@ -9,15 +9,13 @@ public class Seccion {
 		this.inicio = new_start;
 		this.fin = new_end;
 	}
-	public boolean isValid() {
-		return inicio <= fin;
+	public synchronized boolean isValid() {
+		return inicio >= 0;
 	}
-	
-	public Boolean isEmpty() {
-		return inicio == fin;
+	public synchronized boolean isEmpty() {
+		return this.fin < this.inicio;
 	}
-	
-	public int size() {
-		return this.fin - this.inicio;
+	public synchronized int size() {
+		return (this.fin - this.inicio) + 1 ;
 	}
 }

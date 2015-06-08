@@ -1,16 +1,12 @@
 package quick.sort.list;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import sorter.list.dos.ThreadsHandler;
-
 public class SyncAndSortList {
 
-	
 	private List<Integer> elementos;
-	
+
 	public SyncAndSortList() {
 		this.elementos = new LinkedList<Integer>();
 	}
@@ -20,7 +16,7 @@ public class SyncAndSortList {
 	}
 
 	public synchronized Integer get(Integer posicion) {
-		
+
 		return this.elementos.get(posicion);
 	}
 
@@ -39,27 +35,30 @@ public class SyncAndSortList {
 	public synchronized void set(Integer element, Integer posicion) {
 		this.elementos.set(posicion, element);
 	}
-	
+
 	public synchronized List<Integer> getElementos() {
 		return this.elementos;
 	}
-	 
-	public void sort(Integer cantThreads) {
-		Seccion init_rage = new Seccion(0, this.elementos.size()-1);
+
+	public synchronized void sort(Integer cantThreads) {
+		Seccion init_rage = new Seccion(0, (this.elementos.size() - 1));
 		Buffer pila = new Buffer();
 		Counter contador = new Counter(this.elementos.size());
 		List<ThreadQSort> listaDeThreads = new LinkedList<ThreadQSort>();
-		pila.push(init_rage); // agrega el trabajo inicial de ordenar toda la lista
+
+		pila.push(init_rage); // agrega el trabajo inicial de ordenar toda la
 		
 		for (int i = 0; i < cantThreads; i++) {
 			listaDeThreads.add(new ThreadQSort(this.elementos, pila, contador));
 		}
-		
+
 		for (ThreadQSort threadQSort : listaDeThreads) {
 			threadQSort.start();
 		}
+		
+		
 		contador.waitZero();
-		Seccion invalid_range = new Seccion(1,0);
+		Seccion invalid_range = new Seccion(-1, 0);
 		for (int i = 0; i < cantThreads; i++) {
 			pila.push(invalid_range);
 		}
