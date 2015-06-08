@@ -1,51 +1,36 @@
 package quick.sort.list;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class ThreadQSort extends Thread {
 
 	private List<Integer> listaAOrdenar;
-	private Boolean trabajar;
+	private Buffer pila;
+	private Counter contador;
 
-
-	public ThreadQSort(LinkedList<Integer> listaAOrdenar) {
+	public ThreadQSort(List<Integer> listaAOrdenar, Buffer pila, Counter contador) {
 		this.listaAOrdenar = listaAOrdenar;
-		this.trabajar = true;
-	}
-
-	
-	
-	void qsort_worker(List<Integer> list, Buffer pila, Counter contador) { 
-		while (true) {
-			Seccion r = pila.pop(); // consume trabajo (bloqueante)
-			if (!r.isValid()) {
-				return;
-			}
-			if (r.size()>1) {
-				int count = qsort_seccion(list, r.inicio, r.fin);
-				Seccion new_left_range = new Seccion(r.inicio, r.inicio + count-1);
-				Seccion new_rigth_range = new Seccion(r.inicio + count + 1, r.fin);
-				pila.push(new_left_range);  // agrega trabajo
-				pila.push(new_rigth_range); // agrega trabajo
-			} 
-			if (!r.isEmpty()) {
-				contador.dec();
-			}
-		}
+		this.pila = pila;
+		this.contador = contador;
 	}
 	
 	@Override
 	public void run() {
-		
-		
-		
-		
-		while(trabajar){
-			while (listaAOrdenar.size() == 0) {
-				this.esperar();
+		while (true) {
+			Seccion sector = this.pila.pop(); // consume trabajo (bloqueante)
+			if (!sector.isValid()) {
+				return;
 			}
-			
+			if (sector.size()>1) {
+				int count = qsort_seccion(this.listaAOrdenar, sector.inicio, sector.fin);
+				Seccion new_left_range = new Seccion(sector.inicio, sector.inicio + count-1);
+				Seccion new_rigth_range = new Seccion(sector.inicio + count + 1, sector.fin);
+				this.pila.push(new_left_range);  // agrega trabajo
+				this.pila.push(new_rigth_range); // agrega trabajo
+			} 
+			if (!sector.isEmpty()) {
+				contador.decrementar();
+			}
 		}
 		
 	}

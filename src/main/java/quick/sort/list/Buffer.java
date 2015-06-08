@@ -1,5 +1,6 @@
 package quick.sort.list;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class Buffer {
@@ -14,9 +15,13 @@ public class Buffer {
 //		return (n+1) % values.length; 
 //	}
 	
-	public Buffer(List<Seccion> list) {
-		this.values = list;
+	public Buffer() {
+		this.values = new LinkedList<Seccion>();
 	}
+	
+//	public Buffer(List<Seccion> list) {
+//		this.values = list;
+//	}
 	
 	public synchronized void push(Seccion seccion) {
 		values.add(seccion);

@@ -40,25 +40,28 @@ public class SyncAndSortList {
 		this.elementos.set(posicion, element);
 	}
 	
+	public synchronized List<Integer> getElementos() {
+		return this.elementos;
+	}
+	 
 	public void sort(Integer cantThreads) {
-		/**
-		 * Crear los n threads , ponerlo a correr
-		 * y poner los elementos en la lista para ordenar.
-		 * 
-		 * ¿cuando terminan los threads?
-		 * 
-		 */
+		Seccion init_rage = new Seccion(0, this.elementos.size()-1);
+		Buffer pila = new Buffer();
+		Counter contador = new Counter(this.elementos.size());
 		List<ThreadQSort> listaDeThreads = new LinkedList<ThreadQSort>();
+		pila.push(init_rage); // agrega el trabajo inicial de ordenar toda la lista
+		
 		for (int i = 0; i < cantThreads; i++) {
-			 listaDeThreads.add(new ThreadQSort(this.elementos));
+			listaDeThreads.add(new ThreadQSort(this.elementos, pila, contador));
 		}
+		
 		for (ThreadQSort threadQSort : listaDeThreads) {
 			threadQSort.start();
 		}
-		
-	
+		contador.waitZero();
+		Seccion invalid_range = new Seccion(1,0);
+		for (int i = 0; i < cantThreads; i++) {
+			pila.push(invalid_range);
+		}
 	}
-
-		
-	
 }
