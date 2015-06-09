@@ -9,6 +9,7 @@ public class SyncAndSortList {
 
 	public SyncAndSortList() {
 		this.elementos = new LinkedList<Integer>();
+
 	}
 
 	public synchronized Integer size() {
@@ -47,7 +48,7 @@ public class SyncAndSortList {
 		List<ThreadQSort> listaDeThreads = new LinkedList<ThreadQSort>();
 
 		pila.push(init_rage); // agrega el trabajo inicial de ordenar toda la
-		
+
 		for (int i = 0; i < cantThreads; i++) {
 			listaDeThreads.add(new ThreadQSort(this.elementos, pila, contador));
 		}
@@ -55,11 +56,10 @@ public class SyncAndSortList {
 		for (ThreadQSort threadQSort : listaDeThreads) {
 			threadQSort.start();
 		}
-		
-		
+
 		contador.waitZero();
 		Seccion invalid_range = new Seccion(-1, 0);
-		System.out.println("Eliminado Basura: ");
+
 		for (int i = 0; i < cantThreads; i++) {
 			pila.push(invalid_range);
 		}

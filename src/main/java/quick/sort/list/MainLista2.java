@@ -16,6 +16,6 @@ public class MainLista2 {
 	 
 	 // Esto es un while(true)
 	 // que debe ser cortado por el usuario
-	 // el pbjetivo es ver como se bloquea y deja ver el size 
+	 // el objetivo es ver como se bloquea y deja ver el size 
 }
 }
