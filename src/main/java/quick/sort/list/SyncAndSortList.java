@@ -59,6 +59,7 @@ public class SyncAndSortList {
 		
 		contador.waitZero();
 		Seccion invalid_range = new Seccion(-1, 0);
+		System.out.println("Eliminado Basura: ");
 		for (int i = 0; i < cantThreads; i++) {
 			pila.push(invalid_range);
 		}
